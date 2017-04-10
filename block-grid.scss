@@ -1,0 +1,73 @@
+// block grid
+
+// variables - you can set them here, or @import 'bootstrap/variables';
+$grid-gutter-width: 30px;
+
+// mixin to create the grid container
+@mixin make-block-grid-container {
+	@include clearfix;
+	margin-left: ($grid-gutter-width / -2);
+	margin-right: ($grid-gutter-width / -2);
+
+	> * {
+		margin-bottom: $grid-gutter-width;
+		min-height: 1px;
+		padding-left: ($grid-gutter-width / 2);
+		padding-right: ($grid-gutter-width / 2);
+		position: relative;
+	}
+}
+
+// mixin used below to create the grid elements below
+@mixin create-grid($blocks) {
+	float: left;
+	width: percentage(1 / $blocks);
+
+	&:nth-of-type(1n) {
+		clear: none;
+	}
+
+	&:nth-of-type(#{$blocks}n+1) {
+		clear: both;
+	}
+}
+
+// individual block grids
+@mixin make-xs-block-grid ($blocks) {
+
+	@include create-grid($blocks);
+}
+
+@mixin make-sm-block-grid ($blocks) {
+	// @media (min-width: ($screen-sm-min)){  // you can use this built in Bootstrap breakpoint variable instead
+	@media (min-width: 768px) {
+		@include create-grid($blocks);
+	}
+}
+
+@mixin make-md-block-grid ($blocks) {
+	// @media (min-width: ($screen-md-min)){  // you can use this built in Bootstrap breakpoint variable instead
+	@media (min-width: 992px) {
+		@include create-grid($blocks);
+	}
+}
+
+@mixin make-lg-block-grid ($blocks) {
+	// @media (min-width: ($screen-lg-min)){  // you can use this built in Bootstrap breakpoint variable instead
+	@media (min-width: 1200px) {
+		@include create-grid($blocks);
+	}
+}
+
+// block-grid shorthand mixin
+// usage: @include make-block-grid(1,2,4,6)
+@mixin make-block-grid ($cols-xs, $cols-sm, $cols-md, $cols-lg) {
+	@include make-block-grid-container();
+
+	> * {
+		@include make-xs-block-grid($cols-xs);
+		@include make-sm-block-grid($cols-sm);
+		@include make-md-block-grid($cols-md);
+		@include make-lg-block-grid($cols-lg);
+	}
+}
